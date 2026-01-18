@@ -1,21 +1,49 @@
-<div id="story-box" style="padding: 20px; background: #1a1a1a; color: #00ff41; border: 2px solid #00ff41; font-family: monospace; border-radius: 10px;">
-  <p id="story-text">Click the button to generate a reality...</p>
-  <button onclick="generateStory()" style="background: #ff00ff; color: white; padding: 10px; border: none; border-radius: 5px; width: 100%;">GENERATE CHAOS</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maximum Reality Generator</title>
+    <style>
+        body { background: #0a0a0a; color: #00ff41; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { width: 90%; max-width: 400px; padding: 20px; border: 2px solid #ff00ff; border-radius: 15px; background: #111; box-shadow: 0 0 15px #ff00ff; text-align: center; }
+        h1 { font-size: 1.2rem; color: #ff00ff; text-transform: uppercase; }
+        #story-display { min-height: 100px; margin: 20px 0; font-size: 1.1rem; line-height: 1.4; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        button { background: #00ff41; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-bottom: 10px; }
+        .copy-btn { background: #333; color: #00ff41; border: 1px solid #00ff41; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Reality Engine v1.0</h1>
+    <div id="story-display">Tap "Generate" to start a new lore timeline...</div>
+    
+    <button onclick="generate()">GENERATE REALITY</button>
+    <button class="copy-btn" onclick="copyStory()">COPY TO CLIPBOARD</button>
 </div>
 
 <script>
-const data = {
-  characters: ["Azul", "Mochkil", "A hacker cat", "The Chaos Chef"],
-  settings: ["in a quantum lab", "at a rooftop ramen stand", "inside a VR arcade", "in the Maximum Reality HQ"],
-  actions: ["accidentally deletes the internet", "discovers a secret recipe", "fights a laser pointer", "hacks the world's power grid"],
-  twists: ["using only a spatula.", "while wearing neon goggles.", "but it was all a dream... or was it?", "and now time is looping."]
+// This is your "JSON" data living right inside the script
+const lore = {
+    "characters": ["Azul the Sphynx", "Mochkil", "A Quantum Hacker", "The Chaos Chef", "A Cyberpunk Courier"],
+    "settings": ["in a neon-soaked kitchen", "at MaximumReality.xyz HQ", "inside a glitchy arcade cabinet", "on a floating server farm"],
+    "actions": ["accidentally creates a black hole", "perfects a Michelin-star snack", "hacks the reality mainframe", "starts a viral dance-off"],
+    "twists": ["using only a spatula.", "but it's actually 2026.", "while the physics engine fails.", "and Azul is watching."]
 };
 
-function generateStory() {
-  const getRand = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  
-  const story = `${getRand(data.characters)} ${getRand(data.settings)} ${getRand(data.actions)} ${getRand(data.twists)}`;
-  
-  document.getElementById('story-text').innerText = story;
+function generate() {
+    const getRand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    const story = `${getRand(lore.characters)} ${getRand(lore.settings)} ${getRand(lore.actions)} ${getRand(lore.twists)}`;
+    document.getElementById('story-display').innerText = story;
+}
+
+function copyStory() {
+    const text = document.getElementById('story-display').innerText;
+    navigator.clipboard.writeText(text);
+    alert("Story copied to clipboard!");
 }
 </script>
+
+</body>
+</html>
