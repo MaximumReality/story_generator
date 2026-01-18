@@ -1,0 +1,21 @@
+<div id="story-box" style="padding: 20px; background: #1a1a1a; color: #00ff41; border: 2px solid #00ff41; font-family: monospace; border-radius: 10px;">
+  <p id="story-text">Click the button to generate a reality...</p>
+  <button onclick="generateStory()" style="background: #ff00ff; color: white; padding: 10px; border: none; border-radius: 5px; width: 100%;">GENERATE CHAOS</button>
+</div>
+
+<script>
+const data = {
+  characters: ["Azul", "Mochkil", "A hacker cat", "The Chaos Chef"],
+  settings: ["in a quantum lab", "at a rooftop ramen stand", "inside a VR arcade", "in the Maximum Reality HQ"],
+  actions: ["accidentally deletes the internet", "discovers a secret recipe", "fights a laser pointer", "hacks the world's power grid"],
+  twists: ["using only a spatula.", "while wearing neon goggles.", "but it was all a dream... or was it?", "and now time is looping."]
+};
+
+function generateStory() {
+  const getRand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  
+  const story = `${getRand(data.characters)} ${getRand(data.settings)} ${getRand(data.actions)} ${getRand(data.twists)}`;
+  
+  document.getElementById('story-text').innerText = story;
+}
+</script>
