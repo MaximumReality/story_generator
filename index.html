@@ -15,14 +15,18 @@
 
         h1 { font-size: 1.1rem; border-bottom: 1px solid #00ff41; padding-bottom: 10px; color: #ff00ff; text-transform: uppercase; margin-top: 0; }
         
-        #display-area { height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 20px 0; border: 1px solid #222; background: #080808; border-radius: 8px; box-shadow: inset 0 0 10px #000; }
+        #display-area { height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 20px 0; border: 1px solid #222; background: #080808; border-radius: 8px; box-shadow: inset 0 0 10px #000; }
         .recipe-name { font-weight: bold; color: #fff; font-size: 1.2rem; margin-bottom: 8px; padding: 0 10px; text-shadow: 0 0 5px #ff00ff; }
-        .mochkil-desc { font-style: italic; color: #00ff41; font-size: 0.9rem; padding: 0 15px; line-height: 1.4; }
+        .mochkil-desc { font-style: italic; color: #00ff41; font-size: 0.85rem; padding: 0 15px; line-height: 1.4; }
+        .chaos-meter { color: #ff3333; font-size: 0.7rem; margin-top: 10px; font-weight: bold; letter-spacing: 2px; }
         
-        .main-btn { background: #00ff41; color: #000; border: none; padding: 18px; width: 100%; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; font-size: 1rem; box-shadow: 0 4px #008f25; transition: 0.1s; }
+        /* Buttons */
+        .main-btn { background: #00ff41; color: #000; border: none; padding: 18px; width: 100%; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; font-size: 1rem; box-shadow: 0 4px #008f25; transition: 0.1s; margin-bottom: 10px; }
         .main-btn:active { transform: translateY(4px); box-shadow: 0 0 #008f25; }
         
-        .visit-link { display: none; background: #ff00ff; color: white; text-decoration: none; padding: 18px; margin-top: 15px; font-weight: bold; border-radius: 8px; text-align: center; border: 2px solid #fff; animation: glow 1.5s infinite alternate; }
+        .visit-link { display: none; background: #ff00ff; color: white; text-decoration: none; padding: 18px; margin-top: 10px; font-weight: bold; border-radius: 8px; text-align: center; border: 2px solid #fff; animation: glow 1.5s infinite alternate; }
+        .share-btn { display: none; background: #00f2ff; color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; border-radius: 8px; font-size: 0.85rem; }
+
         @keyframes glow { from { box-shadow: 0 0 5px #ff00ff; } to { box-shadow: 0 0 20px #ff00ff; } }
         
         .nav-footer { margin-top: 20px; font-size: 0.7rem; }
@@ -45,11 +49,14 @@
     <div id="display-area">
         <div id="out-name" class="recipe-name">SYSTEM_READY</div>
         <div id="out-desc" class="mochkil-desc">Awaiting culinary command...</div>
+        <div id="out-chaos" class="chaos-meter"></div>
     </div>
 
     <button id="chaosBtn" class="main-btn" onclick="generateSnack()">🎲 INITIATE_SCAN</button>
     
-    <a id="recipe-url" href="#" class="visit-link">ACCESS_RECIPE_FILE</a>
+    <a id="recipe-url" href="#" target="_blank" class="visit-link">ACCESS_RECIPE_FILE</a>
+    
+    <button id="shareBtn" class="share-btn" onclick="shareMission()">📡 SHARE_MISSION</button>
 
     <div class="nav-footer">
         <a href="https://maximumreality.xyz">◄ EXIT_TERMINAL</a>
@@ -57,13 +64,12 @@
 </div>
 
 <script>
-// BOOT SEQUENCE LOGIC
+// BOOT SEQUENCE
 window.onload = function() {
     let progress = 0;
     const bar = document.getElementById('progress-bar');
     const status = document.getElementById('boot-status');
     const screen = document.getElementById('boot-screen');
-    
     const interval = setInterval(() => {
         progress += Math.floor(Math.random() * 15) + 5;
         if (progress >= 100) {
@@ -77,49 +83,74 @@ window.onload = function() {
     }, 150);
 };
 
-// MASTER RECIPE LIBRARY (Added your missing Vault recipes)
+// MASTER RECIPE LIBRARY
 const recipeLibrary = [
-    { name: "Tuna Tartare Takedown", desc: "A Michelin-star strike with a raw edge.", slug: "tuna-takedown.html" },
-    { name: "Bicol Express", desc: "Spicier than a reality glitch.", slug: "bicol-express.html" },
-    { name: "Moroccan Lamb Tagine", desc: "Slow-cooked chaos in a clay pot.", slug: "lamb-tagine.html" },
-    { name: "Glitch Gnocchi", desc: "Purple potato protocols and neon pesto.", slug: "glitch-gnocchi.html" },
-    { name: "Galaxy Puff Tower", desc: "Edible glitter and midnight glaze.", slug: "galaxy-puffs.html" },
-    { name: "Kung Pao Chicken", desc: "Peanut and chili matrix override.", slug: "kung-pao.html" },
-    { name: "Bessara Blast", desc: "Mochkil's creamy lava bean dip.", slug: "bessara_blast.html" },
-    { name: "Neon Miso Noodles", desc: "Slurpable glowing energy.", slug: "neon-miso.html" },
-    { name: "Chocolate Lava Cake", desc: "Warning: Thermal core is molten.", slug: "lava-cake.html" },
-    { name: "Magic Baghrir", desc: "The thousand-hole pancake glitch.", slug: "baghrir.html" },
-    { name: "Hacker Queen Birthday Cake", desc: "Neon pink velvet mousse data.", slug: "birthday-cake.html" },
-    { name: "Coq au Vin Marocain", desc: "French tech with a Moroccan skin.", slug: "coq-au-vin.html" },
-    { name: "Tidal Wave Pizza", desc: "A seafood surge for your tastebuds.", slug: "pizza.html" }
+    { name: "Tuna Tartare Takedown", desc: "Raw edge meets Michelin-star execution.", slug: "tuna-takedown.html" },
+    { name: "Bicol Express", desc: "Chef Mochkil's favorite. Spicier than a reality glitch.", slug: "bicol-express.html" },
+    { name: "Glitch Gnocchi", desc: "Purple potato protocols and neon pesto glaze.", slug: "glitch-gnocchi.html" },
+    { name: "Bessara Blast", desc: "Mochkil's signature creamy lava bean dip.", slug: "bessara_blast.html" },
+    { name: "Tidal Wave Pizza", desc: "A seafood surge for high-performance tastebuds.", slug: "pizza.html" },
+    { name: "Glazed Carnitas Tacos", desc: "Soft-shell protocols enabled. Michelin street food.", slug: "tacos.html" },
+    { name: "Neon Miso Noodles", desc: "Slurpable glowing energy. Slurp at your own risk.", slug: "neon-miso.html" },
+    { name: "Kung Pao Chicken", desc: "Peanut and chili matrix override. High-speed crunch.", slug: "kung-pao.html" },
+    { name: "Miso Salmon Nuggets", desc: "Crunch-tech at maximum medical precision.", slug: "salmon-nuggets.html" },
+    { name: "Quantum Garlic Pasta", desc: "Computed for maximum flavor entanglement.", slug: "garlic-pasta.html" },
+    { name: "Hacker Queen Cake", desc: "Neon pink velvet mousse with encrypted layers.", slug: "birthday-cake.html" },
+    { name: "Galaxy Puff Tower", desc: "Edible glitter and midnight glaze from the stars.", slug: "galaxy-puffs.html" },
+    { name: "Chocolate Lava Cake", desc: "Warning: Thermal core is molten and delicious.", slug: "lava-cake.html" },
+    { name: "Magic Baghrir", desc: "The thousand-hole pancake glitch. Morrocan tech.", slug: "baghrir.html" },
+    { name: "Moroccan Lamb Tagine", desc: "Slow-cooked chaos. Traditional clay pot uplink.", slug: "lamb-tagine.html" },
+    { name: "Coq au Vin Marocain", desc: "French tech with a Moroccan skin. Chef's kiss.", slug: "coq-au-vin.html" }
 ];
+
+let currentRecipe = null;
 
 function generateSnack() {
     const btn = document.getElementById('chaosBtn');
     const nameDisplay = document.getElementById('out-name');
     const descDisplay = document.getElementById('out-desc');
+    const chaosDisplay = document.getElementById('out-chaos');
     const link = document.getElementById('recipe-url');
+    const shareBtn = document.getElementById('shareBtn');
 
-    // UI Feedback
     btn.innerText = "SCANNING_VAULT...";
     btn.style.background = "#555";
     link.style.display = "none";
+    shareBtn.style.display = "none";
+    chaosDisplay.innerText = "";
     
     setTimeout(() => {
         const choice = recipeLibrary[Math.floor(Math.random() * recipeLibrary.length)];
+        currentRecipe = choice;
         
         nameDisplay.innerText = choice.name;
         descDisplay.innerText = choice.desc;
         
-        // Link points to your recipe folder
+        // Random Chaos Rating
+        const chaosLevel = "CHAOS_LEVEL: " + "🔥".repeat(Math.floor(Math.random() * 5) + 1);
+        chaosDisplay.innerText = chaosLevel;
+        
         link.href = "https://maximumreality.github.io/recipes/" + choice.slug;
         link.style.display = "block";
+        shareBtn.style.display = "block";
         
         btn.innerText = "🎲 RESCAN_PANTRY";
         btn.style.background = "#00ff41";
     }, 800);
 }
-</script>
 
+function shareMission() {
+    if (!currentRecipe) return;
+    const shareText = `🍳 Mochkil's Snack OS assigned me a mission: ${currentRecipe.name}!\n\nGenerate your own culinary chaos at:`;
+    const shareUrl = window.location.href;
+
+    if (navigator.share) {
+        navigator.share({ title: 'Snack OS Mission', text: shareText, url: shareUrl }).catch(console.error);
+    } else {
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
+        window.open(twitterUrl, '_blank');
+    }
+}
+</script>
 </body>
 </html>
